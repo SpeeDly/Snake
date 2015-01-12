@@ -200,22 +200,17 @@ Snake.prototype.go = function(direction) {
         this.render();
     }
     else if(nextBlock.state === 1 ){
-        alert("points:" + this.points);
+        alert("points:", this.points);
         clearInterval(interval);
     }
     else if(nextBlock.state === 2 ){
-        this.increasePoint();
+        this.points++;
         this.elements++;
         this.snakeBlocks.unshift(nextBlock);
         nextBlock.removeApple();
         nextBlock.makeSnake();
     }
 
-};
-
-Snake.prototype.increasePoint = function() {
-    this.points++;
-    $("li.player_1 span").text(this.points);
 };
 
 
@@ -244,7 +239,7 @@ function init(){
     interval = setInterval(function(){
         snake.go(command);
         map.generateApple();
-    }, 100);
+    }, 150);
 }
 
 init();

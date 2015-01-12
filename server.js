@@ -1,5 +1,7 @@
-var express = require('express')
-var app = express()
+var express = require('express'); 
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + "/app/index.html");
@@ -7,11 +9,10 @@ app.get('/', function (req, res) {
 
 app.use("/static", express.static(__dirname + "/app/static"));
 
-var server = app.listen(3000, function () {
+io.on('connection', function(socket){
+    console.log('a user connected');
+});
 
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log('Example app listening at http://%s:%s', host, port)
-
-})
+http.listen(3000, function(){
+    console.log("Snake is working");
+});
