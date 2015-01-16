@@ -2,14 +2,20 @@
 <head>
     <link rel="stylesheet" href="static/css/style.css">
     <script src="static/js/jquery-1.11.2.min.js"></script>
-    <script src="static/js/snake.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
-    <script>
-      var socket = io();
-    </script>
+    <script>var socket = io();</script>
 </head>
 <body>
-    <div id="snake">
+    <div class="start_game">
+        <label for="id_rows">Enter rows count:</label>
+        <input id="id_rows" type="text" value="16">
+        <label for="id_cols">Enter colums count:</label>
+        <input id="id_cols" type="text" value="32">
+        <label for="id_blocks">Enter block size:</label>
+        <input id="id_blocks" type="text" value="32">
+        <button id="new_game" value="Start">Start</button>
+    </div>
+    <div id="snake" class="hidden">
         <ul class="score">
             <li class="player_1">Player 1: <span></span></li>
             <li class="player_2">Player 2: <span></span></li>
@@ -18,5 +24,8 @@
             
         </div>
     </div>
+    <script src="static/js/snake.js"></script>
+    <script src="static/js/game.js"></script>
+    <script src="static/js/index.js"></script>
 </body>
 </html>

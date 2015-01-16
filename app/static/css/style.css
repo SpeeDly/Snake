@@ -440,10 +440,22 @@ div.block{
     float: left;
 }
 
-div.snake{
+div.player_1{
     background: green;
+}
+
+div.player_2{
+    background: blue;
+}
+
+div.wall{
+    background: black;
 }
 
 div.apple{
     background: red;
+}
+
+.hidden{
+    display: none;
 }
