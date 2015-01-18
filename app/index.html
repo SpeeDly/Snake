@@ -7,7 +7,7 @@
 </head>
 <body>
     <input id="id_realname" type="text" class="hidden">
-    <div id="rooms">
+    <div id="choise">
         <button id="start_new_game" value="Start">Start game</button>
         <button id="find_created_game" value="Start">Find game</button>
     </div>
@@ -18,13 +18,19 @@
         <input id="id_cols" type="text" value="32">
         <label for="id_blocks">Enter block size:</label>
         <input id="id_blocks" type="text" value="32">
-        <label for="id_blocks">Enter name:</label>
+        <label for="id_name">Enter name:</label>
         <input id="id_name" type="text" value="speedly">
+        <label for="id_room">Room name:</label>
+        <input id="id_room" type="text" value="My room">
         <button id="new_game" value="Start">Start</button>
     </div>
     <div id="find" class="hidden">
         <label for="id_blocks">Enter name:</label>
         <input id="id_name2" type="text" value="koce">
+        <label for="id_blocks">Select room:</label>
+        <div id="rooms">
+            
+        </div>
         <button id="new_game2" value="Start">Start</button>
     </div>
     <div id="wait" class="hidden">

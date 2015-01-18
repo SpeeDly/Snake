@@ -187,6 +187,8 @@ Snake.prototype.go = function(direction) {
     return result;
 };
 
+
+
 app.get('/', function (req, res) {
     res.sendFile(__dirname + "/app/index.html");
 })
@@ -198,36 +200,80 @@ http.listen(3000, function(){
 });
 
 
-var name = [];
-var map, board, snake, snakes = [];
+var rooms = [];
+
+function getRoomIDbyName(name){
+    var room_id = false;
+    rooms.forEach(function(room){
+        if (room.name === name) {
+            room_id = room.id;
+        }
+    });
+    return room_id;
+}
+
+
 io.on('connection', function (socket) {
 
+    socket.on('getRoomsReq', function () {
+        var names = [];
+        rooms.forEach(function(room){
+            names.push(room.name)
+        });
+        socket.emit("getRoomsResp", {"rooms": names});
+    });
 
     socket.on('joinNewPlayer', function (data) {
-        name.push(data.name);
-        io.emit("joinedPlayer", {"name": name});
+        var names = [],
+            room_id;
+        
+        room_id = getRoomIDbyName(data.room);
+
+        if(room_id){
+            rooms[room_id].playerNames.push(data.name);
+            names = rooms[room_id].playerNames;
+        }
+        else{
+            var lastId = rooms[rooms.length-1].id;
+            lastId++;
+            var room = {
+                id: lastId,
+                name: data,
+                playerNames: [data.name],
+            }
+            names = room.playerNames;
+            rooms.push(room);
+        }
+
+        socket.join(data.room);
+
+        io.to(data.room).emit("joinedPlayer", {"names": names});
     });
 
     socket.on('newGame', function (data) {
-        map = new Map(data.rows, data.cols, data.size);
-        board = map.generate();
-        name.forEach(function(e, i){
-            snake = new Snake(i, map, board[5][(3+(i*3))]);
-            snakes.push(snake);
+        var room_id = getRoomIDbyName(data.room);
+        var room = rooms[room_id];
+        room.map = new Map(data.rows, data.cols, data.size);
+        room.board = map.generate();
+        room.snakes = [];
+
+        room.playerNames.forEach(function(e, i){
+            var snake = new Snake(i, map, board[5][(3+(i*3))]);
+            room.snakes.push(snake);
         });
-        snakes.forEach(function(snake){
+
+        room.snakes.forEach(function(snake){
             snake.generate();
         });
-        io.emit('generateMap', { board: board });
+        io.to(room.name).emit('generateMap', { board: board });
     });
 
 
     socket.on('newMove', function (data) {
-        console.log(snakes);
-        console.log(data);
-        var result = snakes[data.snake].go(data.command);
-        result.changedBlocks.push(map.generateApple());
-        io.emit('nextMove', result);
+        var room_id = getRoomIDbyName(data.room);
+        var room = rooms[room_id];
+        var result = room.snakes[data.snake].go(data.command);
+        result.changedBlocks.push(room.generateApple());
+        io.to(room.name).emit('nextMove', result);
     });
-
 });

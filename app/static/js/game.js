@@ -1,9 +1,9 @@
 function init(board){
-    var interval, map, command, snake, name;
+    var interval, map, command, snake, name, room;
 
     name = $("#id_realname").val();
     snake = $("#connected_players ." + name).data("snake");
-    console.log(snake);
+    room = $("#room_name").val();
 
     $(".start_game").addClass("hidden");
     $("#snake").removeClass("hidden");
@@ -15,7 +15,7 @@ function init(board){
     $(document).keyup(function(event){
         if (event.which === 38 || event.which === 37 || event.which === 39 || event.which === 40) {
             command = event.which;
-            socket.emit('newMove', { command: command, snake: snake });
+            socket.emit('newMove', {room: room, command: command, snake: snake });
         };
     })
 
