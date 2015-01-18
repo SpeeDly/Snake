@@ -6,22 +6,36 @@
     <script>var socket = io();</script>
 </head>
 <body>
-    <div class="start_game">
+    <input id="id_realname" type="text" class="hidden">
+    <div id="rooms">
+        <button id="start_new_game" value="Start">Start game</button>
+        <button id="find_created_game" value="Start">Find game</button>
+    </div>
+    <div id="create" class="hidden">
         <label for="id_rows">Enter rows count:</label>
         <input id="id_rows" type="text" value="16">
         <label for="id_cols">Enter colums count:</label>
         <input id="id_cols" type="text" value="32">
         <label for="id_blocks">Enter block size:</label>
         <input id="id_blocks" type="text" value="32">
+        <label for="id_blocks">Enter name:</label>
+        <input id="id_name" type="text" value="speedly">
         <button id="new_game" value="Start">Start</button>
+    </div>
+    <div id="find" class="hidden">
+        <label for="id_blocks">Enter name:</label>
+        <input id="id_name2" type="text" value="koce">
+        <button id="new_game2" value="Start">Start</button>
+    </div>
+    <div id="wait" class="hidden">
+        <div id="connected_players"></div>
+        <button id="start_real_game" class="hidden" value="Start">Start</button>
     </div>
     <div id="snake" class="hidden">
         <ul class="score">
-            <li class="player_1">Player 1: <span></span></li>
-            <li class="player_2">Player 2: <span></span></li>
         </ul>
         <div id="game">
-            
+
         </div>
     </div>
     <script src="static/js/snake.js"></script>

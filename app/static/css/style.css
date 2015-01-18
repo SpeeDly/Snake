@@ -428,11 +428,11 @@ th {
 
 
 #game{
-    border: 1px solid black;    
+    border: 1px solid black;
 }
 
 div{
-    
+
 }
 div.block{
     box-sizing: border-box;
@@ -440,12 +440,20 @@ div.block{
     float: left;
 }
 
-div.player_1{
+div.snake{
+    background: purple;
+}
+
+div.snake_1{
     background: green;
 }
 
-div.player_2{
+div.snake_2{
     background: blue;
+}
+
+div.snake_undefined{
+    background: orange;
 }
 
 div.wall{

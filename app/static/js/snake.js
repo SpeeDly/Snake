@@ -35,6 +35,26 @@ Block.prototype.getElement = function() {
     return $("div.block[data-row='" + this.row + "']").filter("[data-col='" + this.col + "']");
 };
 
+Block.prototype.render = function() {
+    var $block = this.getElement();
+    if (this.snake_id === 0 && this.state === 0) {
+        $block.removeClass();
+        $block.addClass("block");
+    }
+    else if(this.snake_id === 0 && this.state === 1){
+        $block.removeClass();
+        $block.addClass("block wall");
+    }
+    else if(this.state === 2){
+        $block.removeClass();
+        $block.addClass("block apple");
+    }
+    else{
+        $block.removeClass();
+        $block.addClass("block snake_"+this.snake_id);
+    }
+};
+
 
 var Game = function (blocks) {
     $("#game").css({
@@ -62,18 +82,22 @@ Game.prototype.render = function(blocks) {
         return a.concat(b);
     });
     var changedBlocks = [];
-    blocks.forEach(function(blok){
+    blocks.forEach(function(block){
         var temp = allBlocks.filter(function(e){
-            if(block.row === e.row && block.col == e.col)
+            if(block.row === e.row && block.col == e.col){
+                e.state = block.state;
+                e.snake_id = block.snake_id;
                 return true
+            }
         });
-        changedBlocks.push(temp[0]);
+        if(temp[0] !== undefined){
+            changedBlocks.push(temp[0]);
+        }
     });
 
-    this.board.forEach(function(blocks){
-        blocks.forEach(function(block){
-            block.draw();
-        })
+    console.log(changedBlocks);
+    changedBlocks.forEach(function(block){
+            block.render();
     })
 };
 

@@ -1,5 +1,10 @@
 function init(board){
-    var interval, map, command;
+    var interval, map, command, snake, name;
+
+    name = $("#id_realname").val();
+    snake = $("#connected_players ." + name).data("snake");
+    console.log(snake);
+
     $(".start_game").addClass("hidden");
     $("#snake").removeClass("hidden");
 
@@ -9,22 +14,21 @@ function init(board){
     var command = 38;
     $(document).keyup(function(event){
         if (event.which === 38 || event.which === 37 || event.which === 39 || event.which === 40) {
-            command = event.which;        
+            command = event.which;
+            socket.emit('newMove', { command: command, snake: snake });
         };
     })
 
-    while(true){
-        socket.emit('newMove', { command: command });
-        setTimeout(200);
-    }
-
-
     socket.on('nextMove', function (data) {
-        map.render(data.changedBlocks);
+        game.render(data.changedBlocks);
+        $(".score .player_" + data.snake_id + " span").text(data.points);
+        if(data.gameResult != 0){
+            alert("gameOver");
+        }
     });
 
 
-    socket.on('reender', function (data) {
-        e.reender(data.board);
-    });
+    // socket.on('render', function (data) {
+    //     e.render(data.board);
+    // });
 }
