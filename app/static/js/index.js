@@ -10,22 +10,22 @@ function promt(){
         socket.emit('getRoomsReq');
     });
 
-    socket.on('getRoomsResp', function(rooms){
-        rooms.forEach(function(room){
-            $("#rooms").append("<div class='room' data-room=" + room + ">" + room + "</div>")
+    socket.on('getRoomsResp', function(data){
+        data.rooms.forEach(function(room){
+            $("#rooms").append("<div class='room'>" + room + "</div>")
         });
     });
 
-    $(".room").click(function(){
+    $("#rooms").on("click", ".room", function(){
         $(".room").removeClass("active");
         $(this).addClass("active");
     });
 
     $("#find #new_game2").click(function(){
-        var room = $(".room .active");
-        if(room.length === 0){
-            socket.emit('joinNewPlayer', {"name": $("#id_name2").val(), "room": room[0]});
-            $("#room_name").val(room[0]);
+        var room = $(".room.active");
+        if(room.length !== 0){
+            socket.emit('joinNewPlayer', {"name": $("#id_name2").val(), "room": room.text()});
+            $("#room_name").val(room.text());
             $("#find").hide();
             $("#wait").removeClass("hidden");
             $("#id_realname").val($("#id_name2").val());
@@ -69,7 +69,7 @@ socket.on('joinedPlayer', function (data) {
     var $container = $("#connected_players");
     $container.html("");
 
-    data.name.forEach(function(name, i){
+    data.names.forEach(function(name, i){
         $container.append("<div class=" + name + " data-snake=" + i + ">" + name + "</div>");
         $("#snake .score").append("<li class=player_" + i +">" + name + ": <span></span></li>")
     })

@@ -204,11 +204,14 @@ var rooms = [];
 
 function getRoomIDbyName(name){
     var room_id = false;
+    console.log("207", name);
     rooms.forEach(function(room){
-        if (room.name === name) {
+        console.log("209", room.name);
+        if (room.name == name) {
             room_id = room.id;
         }
     });
+    console.log("214", room_id);
     return room_id;
 }
 
@@ -226,19 +229,20 @@ io.on('connection', function (socket) {
     socket.on('joinNewPlayer', function (data) {
         var names = [],
             room_id;
-        
+        console.log(data);
         room_id = getRoomIDbyName(data.room);
 
-        if(room_id){
+        if(room_id !== false){
+            console.log("236", rooms[room_id]);
             rooms[room_id].playerNames.push(data.name);
             names = rooms[room_id].playerNames;
         }
         else{
-            var lastId = rooms[rooms.length-1].id;
+            var lastId = rooms.length === 0 ? -1 : rooms[rooms.length-1].id;
             lastId++;
             var room = {
                 id: lastId,
-                name: data,
+                name: data.room,
                 playerNames: [data.name],
             }
             names = room.playerNames;
@@ -254,11 +258,11 @@ io.on('connection', function (socket) {
         var room_id = getRoomIDbyName(data.room);
         var room = rooms[room_id];
         room.map = new Map(data.rows, data.cols, data.size);
-        room.board = map.generate();
+        room.board = room.map.generate();
         room.snakes = [];
 
         room.playerNames.forEach(function(e, i){
-            var snake = new Snake(i, map, board[5][(3+(i*3))]);
+            var snake = new Snake(i, room.map, room.board[5][(3+(i*3))]);
             room.snakes.push(snake);
         });
 
@@ -273,7 +277,7 @@ io.on('connection', function (socket) {
         var room_id = getRoomIDbyName(data.room);
         var room = rooms[room_id];
         var result = room.snakes[data.snake].go(data.command);
-        result.changedBlocks.push(room.generateApple());
+        result.changedBlocks.push(room.map.generateApple());
         io.to(room.name).emit('nextMove', result);
     });
 });
