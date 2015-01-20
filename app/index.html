@@ -13,16 +13,24 @@
         <button id="find_created_game" value="Start">Find game</button>
     </div>
     <div id="create" class="hidden">
-        <label for="id_rows">Enter rows count:</label>
-        <input id="id_rows" type="text" value="16">
-        <label for="id_cols">Enter colums count:</label>
-        <input id="id_cols" type="text" value="32">
-        <label for="id_blocks">Enter block size:</label>
-        <input id="id_blocks" type="text" value="32">
-        <label for="id_name">Enter name:</label>
-        <input id="id_name" type="text" value="speedly">
-        <label for="id_room">Room name:</label>
-        <input id="id_room" type="text" value="My room">
+        <div>
+            <label for="id_rows">Enter rows count:</label>
+            <input id="id_rows" type="text" value="16">
+        </div>
+        <div>
+            <label for="id_cols">Enter colums count:</label>
+            <input id="id_cols" type="text" value="32">
+        </div>
+        <div>
+            <label for="id_blocks">Enter block size:</label>
+            <input id="id_blocks" type="text" value="32">
+        </div>
+            <label for="id_name">Enter name:</label>
+            <input id="id_name" type="text" value="speedly">
+        <div>
+            <label for="id_room">Room name:</label>
+            <input id="id_room" type="text" value="My room">
+        </div>
         <button id="new_game" value="Start">Start</button>
     </div>
     <div id="find" class="hidden">
@@ -35,6 +43,7 @@
         <button id="new_game2" value="Start">Start</button>
     </div>
     <div id="wait" class="hidden">
+        <div>Wait for the other people before you start the game !!!</div>
         <div id="connected_players"></div>
         <button id="start_real_game" class="hidden" value="Start">Start</button>
     </div>

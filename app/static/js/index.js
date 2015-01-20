@@ -31,7 +31,7 @@ function promt(){
             $("#id_realname").val($("#id_name2").val());
         }
         else{
-            alert("Nope");
+            alert("Please select a room.");
         }
     });
 
@@ -66,12 +66,21 @@ socket.on('generateMap', function (data) {
 });
 
 socket.on('joinedPlayer', function (data) {
-    var $container = $("#connected_players");
+    var $container = $("#connected_players"),
+        $score = $("#snake .score");
+
     $container.html("");
+    $score.html("");
 
     data.names.forEach(function(name, i){
         $container.append("<div class=" + name + " data-snake=" + i + ">" + name + "</div>");
-        $("#snake .score").append("<li class=player_" + i +">" + name + ": <span></span></li>")
+        $score.append("<li class=player_" + i +">" + name + ": <span></span></li>")
     })
 });
 
+window.onbeforeunload = function() {
+    var end = {};
+    end.room = $("#room_name").val();
+    socket.emit('endGame', end);
+    return null;
+}

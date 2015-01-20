@@ -436,12 +436,16 @@ div{
 }
 div.block{
     box-sizing: border-box;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     float: left;
 }
 
 div.snake{
     background: purple;
+}
+
+div.snake_0{
+    background: red;
 }
 
 div.snake_1{
@@ -450,6 +454,14 @@ div.snake_1{
 
 div.snake_2{
     background: blue;
+}
+
+div.snake_3{
+    background: black;
+}
+
+div.snake_4{
+    background: yellow;
 }
 
 div.snake_undefined{
@@ -461,16 +473,58 @@ div.wall{
 }
 
 div.apple{
-    background: red;
+    background: url("../img/apple.png");
+    background-size: 32px;
 }
 
 .hidden{
     display: none;
 }
 
-.room{
-  background: red;
+#start_new_game, #find_created_game{
+    background: skyblue;
+    border: 0px;
+    color: white;
+    height: 100px;
+    width: 200px;
+    border-radius: 10px;
+    margin-right: 0px;
+    margin-left: 120px;
+    margin-top: 120px;
 }
+
+label{
+    display: block;
+}
+
+input{
+    margin-bottom: 20px;
+}
+
+#new_game, #new_game2{
+    background: skyblue;
+    border: 0px;
+    color: white;
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+#rooms{
+    width: 500px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.room{
+    cursor: pointer;
+    line-height: 25px;
+    border-bottom: 1px solid gray;
+}
+.room:last-child{
+    border-bottom: 0px;
+}
+
 .room.active{
-  background: yellow;
+    background: green;
 }

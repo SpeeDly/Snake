@@ -113,14 +113,13 @@ Snake.prototype.generate = function() {
 };
 
 Snake.prototype.go = function(direction) {
-    console.log(this.snake_id);
     // define required arguments
     var lastBlock = this.snakeBlocks[this.snakeBlocks.length-1],
           copySnake = this.snakeBlocks.slice(0),
           nextBlock;
     var result = {
         "changedBlocks": [],
-        "gameResult": 0,
+        "gameResult": -1,
         "points": this.points,
         "snake_id": this.snake_id,
     }
@@ -145,7 +144,6 @@ Snake.prototype.go = function(direction) {
         case 38:
             row = block.row === 0 ? ROWS-1 : (block.row-1);
             nextBlock = board[row][block.col];
-            console.log(nextBlock);
             break;
         case 40:
             row = block.row === ROWS-1 ? 0 : (block.row+1);
@@ -204,14 +202,11 @@ var rooms = [];
 
 function getRoomIDbyName(name){
     var room_id = false;
-    console.log("207", name);
     rooms.forEach(function(room){
-        console.log("209", room.name);
         if (room.name == name) {
             room_id = room.id;
         }
     });
-    console.log("214", room_id);
     return room_id;
 }
 
@@ -229,11 +224,9 @@ io.on('connection', function (socket) {
     socket.on('joinNewPlayer', function (data) {
         var names = [],
             room_id;
-        console.log(data);
         room_id = getRoomIDbyName(data.room);
 
         if(room_id !== false){
-            console.log("236", rooms[room_id]);
             rooms[room_id].playerNames.push(data.name);
             names = rooms[room_id].playerNames;
         }
@@ -262,7 +255,7 @@ io.on('connection', function (socket) {
         room.snakes = [];
 
         room.playerNames.forEach(function(e, i){
-            var snake = new Snake(i, room.map, room.board[5][(3+(i*3))]);
+            var snake = new Snake((i+1), room.map, room.board[5][(3+(i*3))]);
             room.snakes.push(snake);
         });
 
@@ -272,12 +265,21 @@ io.on('connection', function (socket) {
         io.to(room.name).emit('generateMap', { board: board });
     });
 
-
     socket.on('newMove', function (data) {
         var room_id = getRoomIDbyName(data.room);
         var room = rooms[room_id];
         var result = room.snakes[data.snake].go(data.command);
         result.changedBlocks.push(room.map.generateApple());
+        if(result.gameResult !== -1){
+            result.gameResult = room.playerNames[result.gameResult];
+        }
         io.to(room.name).emit('nextMove', result);
+    });
+
+    socket.on('endGame', function (data) {
+        var index = getRoomIDbyName(data.room);
+        if(index !== false){
+            rooms.splice(index, 1);
+        }
     });
 });

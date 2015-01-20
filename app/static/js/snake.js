@@ -8,14 +8,14 @@ var Block = function (row, col, state, size, snake_id) {
 
 Block.prototype.draw = function() {
     var pixel = '<div class="block ';
-    if (this.snake_id === 0 && this.state === 0) {
+    if (this.state === 0) {
         pixel += '';
     }
     else if(this.snake_id === 0 && this.state === 1){
         pixel += 'wall';
     }
     else{
-        pixel += 'snake player_' + this.snake_id;
+        pixel += 'snake_' + this.snake_id;
     }
     pixel += '" style="width:';
     pixel += this.size;
@@ -37,7 +37,7 @@ Block.prototype.getElement = function() {
 
 Block.prototype.render = function() {
     var $block = this.getElement();
-    if (this.snake_id === 0 && this.state === 0) {
+    if (this.state === 0) {
         $block.removeClass();
         $block.addClass("block");
     }
@@ -51,7 +51,7 @@ Block.prototype.render = function() {
     }
     else{
         $block.removeClass();
-        $block.addClass("block snake_"+this.snake_id);
+        $block.addClass("block snake_" + this.snake_id);
     }
 };
 
@@ -95,7 +95,6 @@ Game.prototype.render = function(blocks) {
         }
     });
 
-    console.log(changedBlocks);
     changedBlocks.forEach(function(block){
             block.render();
     })
