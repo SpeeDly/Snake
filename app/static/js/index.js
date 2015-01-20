@@ -10,7 +10,12 @@ function promt(){
         socket.emit('getRoomsReq');
     });
 
+    $("label i").click(function(){
+        socket.emit('getRoomsReq');
+    })
+
     socket.on('getRoomsResp', function(data){
+        $("#rooms").html("");
         data.rooms.forEach(function(room){
             $("#rooms").append("<div class='room'>" + room + "</div>")
         });

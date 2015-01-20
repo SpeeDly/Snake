@@ -528,3 +528,7 @@ input{
 .room.active{
     background: green;
 }
+
+i{
+    color: blue;
+}
